@@ -21,3 +21,18 @@ Content-Type: application/json
 
 ### Eliminar locker
 DELETE https://localhost:7177/api/lockers/1
+
+###
+
+### Actualizar locker
+PUT https://localhost:7177/api/lockers/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 2,
+  "codigo": "L-001",
+  "ubicacion": "Planta 2",
+  "estado": "Ocupado",
+  "tamano": "Grande"
+}

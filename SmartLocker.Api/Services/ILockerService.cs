@@ -9,4 +9,6 @@ public interface ILockerService
     Task<Locker> AddAsync(Locker locker);
 
     Task<bool> DeleteAsync(int id);
+
+    Task<Locker?> UpdateAsync(int id, Locker locker);
 }

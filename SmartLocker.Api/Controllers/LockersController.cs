@@ -41,4 +41,17 @@ public class LockersController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Locker>> Put(int id, Locker locker)
+    {
+        var lockerActualizado = await _lockerService.UpdateAsync(id, locker);
+
+        if (lockerActualizado == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(lockerActualizado);
+    }
 }

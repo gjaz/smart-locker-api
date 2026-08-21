@@ -43,4 +43,24 @@ public class LockerService : ILockerService
 
         return true;
     }
+
+    public async Task<Locker?> UpdateAsync(int id, Locker locker)
+    {
+        var lockerExistente = await _context.Lockers
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (lockerExistente == null)
+        {
+            return null;
+        }
+
+        lockerExistente.Codigo = locker.Codigo;
+        lockerExistente.Ubicacion = locker.Ubicacion;
+        lockerExistente.Estado = locker.Estado;
+        lockerExistente.Tamano = locker.Tamano;
+
+        await _context.SaveChangesAsync();
+
+        return lockerExistente;
+    }
 }
