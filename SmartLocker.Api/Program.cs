@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using SmartLocker.Api.Data;
 using SmartLocker.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<SmartLockerDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SmartLockerDb")));
 
 // Add services to the container.
 
@@ -20,7 +26,7 @@ builder.Services.AddCors(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<ILockerService, LockerService>();
+builder.Services.AddScoped<ILockerService, LockerService>();
 
 var app = builder.Build();
 

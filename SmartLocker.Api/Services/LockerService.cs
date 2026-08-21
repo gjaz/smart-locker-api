@@ -1,80 +1,45 @@
-﻿using SmartLocker.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartLocker.Api.Data;
+using SmartLocker.Api.Models;
 
 namespace SmartLocker.Api.Services;
 
 public class LockerService : ILockerService
 {
-    private List<Locker> lockers;
+    private readonly SmartLockerDbContext _context;
 
-    public List<Locker> Lockers
+    public LockerService(SmartLockerDbContext context)
     {
-        get
-        {
-            if (lockers == null)
-            {
-                lockers = new List<Locker>
-                {
-                    new Locker
-                    {
-                        Id = 1,
-                        Codigo = "L-001",
-                        Ubicacion = "Planta 1",
-                        Estado = "Disponible",
-                        Tamano = "Mediano"
-                    },
-                    new Locker
-                    {
-                        Id = 2,
-                        Codigo = "L-002",
-                        Ubicacion = "Planta 1",
-                        Estado = "Ocupado",
-                        Tamano = "Grande"
-                    },
-                    new Locker
-                    {
-                        Id = 3,
-                        Codigo = "L-003",
-                        Ubicacion = "Planta 2",
-                        Estado = "Disponible",
-                        Tamano = "Pequeño"
-                    }
-                };
-            }
-
-            return lockers;
-        }
-        set
-        {
-            lockers = value;
-        }
+        _context = context;
     }
 
-    public IEnumerable<Locker> GetAll()
+    public async Task<IEnumerable<Locker>> GetAllAsync()
     {
-        return Lockers;
+        return await _context.Lockers.ToListAsync();
     }
 
-    public Locker Add(Locker locker)
+    public async Task<Locker> AddAsync(Locker locker)
     {
-        locker.Id = Lockers.Count == 0
-            ? 1
-            : Lockers.Max(x => x.Id) + 1;
+        _context.Lockers.Add(locker);
 
-        Lockers.Add(locker);
+        await _context.SaveChangesAsync();
 
         return locker;
     }
 
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var locker = Lockers.FirstOrDefault(x => x.Id == id);
+        var locker = await _context.Lockers
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (locker == null)
         {
             return false;
         }
 
-        Lockers.Remove(locker);
+        _context.Lockers.Remove(locker);
+
+        await _context.SaveChangesAsync();
 
         return true;
     }

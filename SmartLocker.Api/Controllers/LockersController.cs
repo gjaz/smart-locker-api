@@ -14,25 +14,25 @@ public class LockersController : ControllerBase
     {
         _lockerService = lockerService;
     }
-
+    
     [HttpGet]
-    public IEnumerable<Locker> Get()
+    public async Task<IEnumerable<Locker>> Get()
     {
-        return _lockerService.GetAll();
+        return await _lockerService.GetAllAsync();
     }
 
     [HttpPost]
-    public ActionResult<Locker> Post(Locker locker)
+    public async Task<ActionResult<Locker>> Post(Locker locker)
     {
-        var nuevoLocker = _lockerService.Add(locker);
+        var nuevoLocker = await _lockerService.AddAsync(locker);
 
         return Ok(nuevoLocker);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var eliminado = _lockerService.Delete(id);
+        var eliminado = await _lockerService.DeleteAsync(id);
 
         if (!eliminado)
         {
@@ -40,5 +40,5 @@ public class LockersController : ControllerBase
         }
 
         return NoContent();
-    }   
+    }
 }

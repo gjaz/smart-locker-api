@@ -4,7 +4,9 @@ namespace SmartLocker.Api.Services;
 
 public interface ILockerService
 {
-    IEnumerable<Locker> GetAll();
-    Locker Add(Locker locker);
-    bool Delete(int id);
+    Task<IEnumerable<Locker>> GetAllAsync();
+
+    Task<Locker> AddAsync(Locker locker);
+
+    Task<bool> DeleteAsync(int id);
 }

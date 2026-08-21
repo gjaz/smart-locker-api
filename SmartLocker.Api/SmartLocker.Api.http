@@ -4,3 +4,20 @@ GET {{SmartLocker.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+### Crear locker
+POST https://localhost:7177/api/lockers
+Content-Type: application/json
+
+{
+  "id": 0,
+  "codigo": "L-001",
+  "ubicacion": "Planta 1",
+  "estado": "Disponible",
+  "tamano": "Mediano"
+}
+
+###
+
+### Eliminar locker
+DELETE https://localhost:7177/api/lockers/1
