@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmartLocker.Api.Data;
 using SmartLocker.Api.Services;
+using SmartLocker.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<ILockerService, LockerService>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
