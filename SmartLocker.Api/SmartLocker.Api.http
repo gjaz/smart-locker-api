@@ -8,31 +8,46 @@ Accept: application/json
 ### Crear locker
 POST https://localhost:7177/api/lockers
 Content-Type: application/json
+Accept: application/json
 
 {
-  "id": 0,
-  "codigo": "L-001",
-  "ubicacion": "Planta 1",
+  "codigo": "L-006",
+  "ubicacion": "Planta 5",
   "estado": "Disponible",
-  "tamano": "Mediano"
+  "tamano": "Pequeño"
 }
 
 ###
 
 ### Eliminar locker
-DELETE https://localhost:7177/api/lockers/1
+DELETE https://localhost:7177/api/lockers/6
 
 ###
 
 ### Actualizar locker
-PUT https://localhost:7177/api/lockers/2
+PUT https://localhost:7177/api/lockers/6
 Content-Type: application/json
 Accept: application/json
 
 {
-  "id": 2,
-  "codigo": "L-001",
-  "ubicacion": "Planta 2",
+  "codigo": "L-006",
+  "ubicacion": "Planta 6",
   "estado": "Ocupado",
   "tamano": "Grande"
 }
+
+### Crear locker inválido
+POST https://localhost:7177/api/lockers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "codigo": "",
+  "ubicacion": "",
+  "estado": "Disponible",
+  "tamano": "Mediano"
+}
+
+### Obtener lockers
+GET https://localhost:7177/api/lockers
+Accept: application/json

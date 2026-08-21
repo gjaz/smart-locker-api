@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartLocker.Api.Data;
 using SmartLocker.Api.Models;
+using SmartLocker.Api.DTOs;
 
 namespace SmartLocker.Api.Services;
 
@@ -13,18 +14,42 @@ public class LockerService : ILockerService
         _context = context;
     }
 
-    public async Task<IEnumerable<Locker>> GetAllAsync()
+    public async Task<IEnumerable<LockerDto>> GetAllAsync()
     {
-        return await _context.Lockers.ToListAsync();
+        return await _context.Lockers
+            .Select(locker => new LockerDto
+            {
+                Id = locker.Id,
+                Codigo = locker.Codigo,
+                Ubicacion = locker.Ubicacion,
+                Estado = locker.Estado,
+                Tamano = locker.Tamano
+            })
+            .ToListAsync();
     }
 
-    public async Task<Locker> AddAsync(Locker locker)
+    public async Task<LockerDto> AddAsync(CreateLockerDto dto)
     {
+        var locker = new Locker
+        {
+            Codigo = dto.Codigo,
+            Ubicacion = dto.Ubicacion,
+            Estado = dto.Estado,
+            Tamano = dto.Tamano
+        };
+
         _context.Lockers.Add(locker);
 
         await _context.SaveChangesAsync();
 
-        return locker;
+        return new LockerDto
+        {
+            Id = locker.Id,
+            Codigo = locker.Codigo,
+            Ubicacion = locker.Ubicacion,
+            Estado = locker.Estado,
+            Tamano = locker.Tamano
+        };
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -44,7 +69,7 @@ public class LockerService : ILockerService
         return true;
     }
 
-    public async Task<Locker?> UpdateAsync(int id, Locker locker)
+    public async Task<LockerDto?> UpdateAsync(int id, UpdateLockerDto dto)
     {
         var lockerExistente = await _context.Lockers
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -54,13 +79,20 @@ public class LockerService : ILockerService
             return null;
         }
 
-        lockerExistente.Codigo = locker.Codigo;
-        lockerExistente.Ubicacion = locker.Ubicacion;
-        lockerExistente.Estado = locker.Estado;
-        lockerExistente.Tamano = locker.Tamano;
+        lockerExistente.Codigo = dto.Codigo;
+        lockerExistente.Ubicacion = dto.Ubicacion;
+        lockerExistente.Estado = dto.Estado;
+        lockerExistente.Tamano = dto.Tamano;
 
         await _context.SaveChangesAsync();
 
-        return lockerExistente;
+        return new LockerDto
+        {
+            Id = lockerExistente.Id,
+            Codigo = lockerExistente.Codigo,
+            Ubicacion = lockerExistente.Ubicacion,
+            Estado = lockerExistente.Estado,
+            Tamano = lockerExistente.Tamano
+        };
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartLocker.Api.Models;
 using SmartLocker.Api.Services;
+using SmartLocker.Api.DTOs;
 
 namespace SmartLocker.Api.Controllers;
 
@@ -14,17 +15,17 @@ public class LockersController : ControllerBase
     {
         _lockerService = lockerService;
     }
-    
+
     [HttpGet]
-    public async Task<IEnumerable<Locker>> Get()
+    public async Task<IEnumerable<LockerDto>> Get()
     {
         return await _lockerService.GetAllAsync();
     }
 
     [HttpPost]
-    public async Task<ActionResult<Locker>> Post(Locker locker)
+    public async Task<ActionResult<LockerDto>> Post(CreateLockerDto dto)
     {
-        var nuevoLocker = await _lockerService.AddAsync(locker);
+        var nuevoLocker = await _lockerService.AddAsync(dto);
 
         return Ok(nuevoLocker);
     }
@@ -43,15 +44,15 @@ public class LockersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Locker>> Put(int id, Locker locker)
+    public async Task<ActionResult<LockerDto>> Put(int id, UpdateLockerDto dto)
     {
-        var lockerActualizado = await _lockerService.UpdateAsync(id, locker);
+        var actualizado = await _lockerService.UpdateAsync(id, dto);
 
-        if (lockerActualizado == null)
+        if (actualizado == null)
         {
             return NotFound();
         }
 
-        return Ok(lockerActualizado);
+        return Ok(actualizado);
     }
 }

@@ -1,14 +1,15 @@
 ﻿using SmartLocker.Api.Models;
+using SmartLocker.Api.DTOs;
 
 namespace SmartLocker.Api.Services;
 
 public interface ILockerService
 {
-    Task<IEnumerable<Locker>> GetAllAsync();
+    Task<IEnumerable<LockerDto>> GetAllAsync();
 
-    Task<Locker> AddAsync(Locker locker);
+    Task<LockerDto> AddAsync(CreateLockerDto dto);
 
     Task<bool> DeleteAsync(int id);
 
-    Task<Locker?> UpdateAsync(int id, Locker locker);
+    Task<LockerDto?> UpdateAsync(int id, UpdateLockerDto dto);
 }
