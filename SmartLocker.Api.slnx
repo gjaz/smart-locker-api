@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="SmartLocker.Api.Tests/SmartLocker.Api.Tests.csproj" />
   <Project Path="SmartLocker.Api/SmartLocker.Api.csproj" />
 </Solution>
