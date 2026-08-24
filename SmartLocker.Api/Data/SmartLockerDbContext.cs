@@ -12,4 +12,5 @@ public class SmartLockerDbContext : DbContext
     }
 
     public DbSet<Locker> Lockers => Set<Locker>();
+    public DbSet<User> Users => Set<User>();
 }

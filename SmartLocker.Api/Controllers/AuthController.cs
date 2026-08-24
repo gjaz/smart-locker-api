@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SmartLocker.Api.DTOs;
+using SmartLocker.Api.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using SmartLocker.Api.DTOs;
 
 namespace SmartLocker.Api.Controllers;
 
@@ -12,16 +13,21 @@ namespace SmartLocker.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IUserService _userService;
 
-    public AuthController(IConfiguration configuration)
+    public AuthController(IConfiguration configuration,
+    IUserService userService)
     {
         _configuration = configuration;
+        _userService = userService;
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDto dto)
+    public async Task<IActionResult> Login(LoginDto dto)
     {
-        if (dto.Username != "admin" || dto.Password != "1234")
+        var user = await _userService.ValidateCredentialsAsync(dto.Username, dto.Password);
+
+        if (user == null)
         {
             return Unauthorized();
         }
@@ -34,9 +40,9 @@ public class AuthController : ControllerBase
 
         var claims = new[]
         {
-        new Claim(ClaimTypes.Name, dto.Username),
-        new Claim(ClaimTypes.Role, "Admin")
-    };
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.Role)
+        };
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtKey));
