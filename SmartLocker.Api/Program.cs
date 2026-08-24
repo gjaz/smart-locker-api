@@ -80,6 +80,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await DbInitializer.SeedAsync(app.Services);
+await DbInitializer.SeedAsync(
+    app.Services,
+    app.Configuration);
 
 app.Run();
