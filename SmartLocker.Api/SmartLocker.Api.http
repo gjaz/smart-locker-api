@@ -1,5 +1,7 @@
 @SmartLocker.Api_HostAddress = http://localhost:5231
 
+@token = InserteToken
+
 GET {{SmartLocker.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
@@ -51,3 +53,12 @@ Accept: application/json
 ### Obtener lockers
 GET https://localhost:7177/api/lockers
 Accept: application/json
+
+### Login
+POST https://localhost:7177/api/auth/login
+Accept: application/json
+
+  ### GET lockers con token
+GET https://localhost:7177/api/lockers
+Accept: application/json
+Authorization: Bearer {{token}}

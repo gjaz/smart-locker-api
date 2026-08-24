@@ -2,11 +2,13 @@
 using SmartLocker.Api.Models;
 using SmartLocker.Api.Services;
 using SmartLocker.Api.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartLocker.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class LockersController : ControllerBase
 {
     private readonly ILockerService _lockerService;
