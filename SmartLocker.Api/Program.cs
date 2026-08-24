@@ -8,9 +8,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SmartLockerDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("SmartLockerDb")));
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddDbContext<SmartLockerDbContext>(options =>
+        options.UseInMemoryDatabase("SmartLockerIntegrationTests"));
+}
+else
+{
+    builder.Services.AddDbContext<SmartLockerDbContext>(options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("SmartLockerDb")));
+}
 
 // Add services to the container.
 
@@ -85,3 +93,5 @@ await DbInitializer.SeedAsync(
     app.Configuration);
 
 app.Run();
+
+public partial class Program { }
