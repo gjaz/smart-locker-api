@@ -91,3 +91,31 @@ Accept: application/json
 {
   "username": "admin"
 }
+
+### Login User
+POST https://localhost:7177/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "user",
+  "password": "InsertePassword"
+}
+
+### GET lockers con rol User
+GET https://localhost:7177/api/lockers
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### POST locker con rol User
+POST https://localhost:7177/api/lockers
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "codigo": "L-USER",
+  "ubicacion": "Planta 1",
+  "estado": "Disponible",
+  "tamano": "Mediano"
+}
