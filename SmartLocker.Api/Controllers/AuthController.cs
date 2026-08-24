@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using SmartLocker.Api.DTOs;
 
 namespace SmartLocker.Api.Controllers;
 
@@ -18,8 +19,13 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login()
+    public IActionResult Login(LoginDto dto)
     {
+        if (dto.Username != "admin" || dto.Password != "1234")
+        {
+            return Unauthorized();
+        }
+
         var jwtKey = _configuration["Jwt:Key"]
             ?? throw new InvalidOperationException("JWT Key no configurada.");
 
@@ -28,9 +34,9 @@ public class AuthController : ControllerBase
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, "admin"),
-            new Claim(ClaimTypes.Role, "Admin")
-        };
+        new Claim(ClaimTypes.Name, dto.Username),
+        new Claim(ClaimTypes.Role, "Admin")
+    };
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtKey));

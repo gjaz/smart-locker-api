@@ -62,3 +62,32 @@ Accept: application/json
 GET https://localhost:7177/api/lockers
 Accept: application/json
 Authorization: Bearer {{token}}
+
+### Login correcto
+POST https://localhost:7177/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "admin",
+  "password": "1234"
+}
+
+  ### Login incorrecto
+POST https://localhost:7177/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "admin",
+  "password": "incorrecta"
+}
+
+### Login sin password
+POST https://localhost:7177/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "admin"
+}
