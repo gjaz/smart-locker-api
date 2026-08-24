@@ -24,6 +24,7 @@ public class LockersController : ControllerBase
         return await _lockerService.GetAllAsync();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<LockerDto>> Post(CreateLockerDto dto)
     {
@@ -32,6 +33,7 @@ public class LockersController : ControllerBase
         return Ok(nuevoLocker);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -45,6 +47,7 @@ public class LockersController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<LockerDto>> Put(int id, UpdateLockerDto dto)
     {

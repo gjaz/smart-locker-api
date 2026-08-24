@@ -34,5 +34,24 @@ public static class DbInitializer
                 password,
                 role);
         }
+
+        var userUsername = configuration["SeedUser:Username"]
+            ?? throw new InvalidOperationException("SeedUser Username no configurado.");
+
+        var userPassword = configuration["SeedUser:Password"]
+            ?? throw new InvalidOperationException("SeedUser Password no configurado.");
+
+        var userRole = configuration["SeedUser:Role"]
+            ?? throw new InvalidOperationException("SeedUser Role no configurado.");
+
+        var user = await userService.GetByUsernameAsync(userUsername);
+
+        if (user is null)
+        {
+            await userService.CreateAsync(
+                userUsername,
+                userPassword,
+                userRole);
+        }
     }
 }
