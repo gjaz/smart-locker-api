@@ -47,5 +47,19 @@ services:
       - "8080:8080"
 
 
+  ui:
+    build:
+      context: ../smart-locker-ui
+      dockerfile: Dockerfile
+
+    container_name: smartlocker-ui
+
+    depends_on:
+      - api
+
+    ports:
+      - "4200:80"
+
+
 volumes:
   smartlocker-sql-data:
