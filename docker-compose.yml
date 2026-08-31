@@ -1,0 +1,51 @@
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    container_name: smartlocker-sqlserver
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD}"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - smartlocker-sql-data:/var/opt/mssql
+
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: smartlocker-api
+
+    depends_on:
+      - sqlserver
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+
+      ConnectionStrings__SmartLockerDb: "Server=sqlserver,1433;Database=SmartLockerDb;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=True;"
+
+      Jwt__Key: "${JWT_KEY}"
+      Jwt__Issuer: "SmartLocker.Api"
+      Jwt__Audience: "SmartLocker.Ui"
+
+      SeedAdmin__Username: "${SEED_ADMIN_USERNAME}"
+      SeedAdmin__Password: "${SEED_ADMIN_PASSWORD}"
+      SeedAdmin__Role: "Admin"
+
+      SeedUser__Username: "${SEED_USER_USERNAME}"
+      SeedUser__Password: "${SEED_USER_PASSWORD}"
+      SeedUser__Role: "User"
+
+    ports:
+      - "8080:8080"
+
+
+volumes:
+  smartlocker-sql-data:
