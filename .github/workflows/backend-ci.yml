@@ -30,3 +30,6 @@ jobs:
 
       - name: Run tests
         run: dotnet test SmartLocker.Api.slnx --no-build --configuration Release
+
+      - name: Build Docker image
+        run: docker build -t smartlocker-api:${{ github.sha }} .
