@@ -8,27 +8,25 @@ on:
   pull_request:
     branches:
       - main
-      
-jobs:
 
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
-      
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Checkout repository
-    uses: actions/checkout@v4  
-    
-  - name: Setup .NET
-    uses: actions/setup-dotnet@v4
-    with:
-    dotnet-version: '10.0.x'
-    
-  - name: Restore dependencies
-    run: dotnet restore
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
 
-  - name: Build
-    run: dotnet build --no-restore --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore SmartLocker.Api.slnx
 
-  - name: Run tests
-    run: dotnet test --no-build --configuration Release
+      - name: Build
+        run: dotnet build SmartLocker.Api.slnx --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test SmartLocker.Api.slnx --no-build --configuration Release
