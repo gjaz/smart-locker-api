@@ -68,6 +68,8 @@ builder.Services
         };
     });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -87,6 +89,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 await DbInitializer.SeedAsync(
     app.Services,
