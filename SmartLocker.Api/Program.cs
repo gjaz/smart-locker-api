@@ -17,7 +17,14 @@ else
 {
     builder.Services.AddDbContext<SmartLockerDbContext>(options =>
         options.UseSqlServer(
-            builder.Configuration.GetConnectionString("SmartLockerDb")));
+            builder.Configuration.GetConnectionString("SmartLockerDb"),
+            sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null);
+            }));
 }
 
 // Add services to the container.
