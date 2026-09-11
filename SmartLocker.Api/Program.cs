@@ -36,7 +36,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AngularPolicy", policy =>
     {
         policy
-            .WithOrigins("http://localhost:4200")
+            .WithOrigins(
+                "http://localhost:4200",
+                "https://https://smartlocker-ui.calmtree-c5d5c04a.southcentralus.azurecontainerapps.io"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
