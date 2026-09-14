@@ -8,6 +8,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+
+builder.Logging.AddSimpleConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.SingleLine = true;
+    options.TimestampFormat = "yyyy-MM-dd HH:mm:ss ";
+});
+
 if (builder.Environment.IsEnvironment("Testing"))
 {
     builder.Services.AddDbContext<SmartLockerDbContext>(options =>
