@@ -14,21 +14,35 @@ public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IConfiguration configuration,
-    IUserService userService)
+    public AuthController(
+        IConfiguration configuration,
+        IUserService userService,
+        ILogger<AuthController> logger)
     {
         _configuration = configuration;
         _userService = userService;
+        _logger = logger;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        var user = await _userService.ValidateCredentialsAsync(dto.Username, dto.Password);
+        _logger.LogInformation(
+            "Login attempt for user {Username}",
+            dto.Username);
+
+        var user = await _userService.ValidateCredentialsAsync(
+            dto.Username,
+            dto.Password);
 
         if (user == null)
         {
+            _logger.LogWarning(
+                "Login failed for user {Username}",
+                dto.Username);
+
             return Unauthorized();
         }
 
@@ -60,6 +74,11 @@ public class AuthController : ControllerBase
 
         var tokenString =
             new JwtSecurityTokenHandler().WriteToken(token);
+
+        _logger.LogInformation(
+            "Login successful for user {Username} with role {Role}",
+            user.Username,
+            user.Role);
 
         return Ok(new
         {

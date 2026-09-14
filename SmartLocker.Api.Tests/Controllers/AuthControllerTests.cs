@@ -7,6 +7,7 @@ using SmartLocker.Api.Models;
 using SmartLocker.Api.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace SmartLocker.Api.Tests.Controllers;
 
@@ -57,7 +58,8 @@ public class AuthControllerTests
 
         var controller = new AuthController(
             _configuration,
-            _mockUserService.Object);
+            _mockUserService.Object,
+            NullLogger<AuthController>.Instance);
 
         // Act
         var result = await controller.Login(dto);
@@ -92,7 +94,8 @@ public class AuthControllerTests
 
         var controller = new AuthController(
             _configuration,
-            _mockUserService.Object);
+            _mockUserService.Object,
+            NullLogger<AuthController>.Instance);
 
         // Act
         var result = await controller.Login(dto);
@@ -133,7 +136,8 @@ public class AuthControllerTests
 
         var controller = new AuthController(
             _configuration,
-            _mockUserService.Object);
+            _mockUserService.Object,
+            NullLogger<AuthController>.Instance);
 
         // Act
         var result = await controller.Login(dto);
