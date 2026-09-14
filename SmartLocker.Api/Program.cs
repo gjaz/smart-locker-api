@@ -30,6 +30,8 @@ builder.Logging.AddSimpleConsole(options =>
     options.TimestampFormat = "yyyy-MM-dd HH:mm:ss ";
 });
 
+builder.Logging.AddOpenTelemetry();
+
 if (builder.Environment.IsEnvironment("Testing"))
 {
     builder.Services.AddDbContext<SmartLockerDbContext>(options =>
